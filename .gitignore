@@ -3,3 +3,4 @@
 *.iml
 
 .idea/compiler.xml
+app/target/classes/log4j.properties
