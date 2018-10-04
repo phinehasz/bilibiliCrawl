@@ -45,6 +45,11 @@
             <version>1.7</version>
         </dependency>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.10</version>
+        </dependency>
+        <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-selenium</artifactId>
             <version>0.7.3</version>
@@ -65,5 +70,7 @@
             <version>2.18.0</version>
         </dependency>
     </dependencies>
+
+
 
 </project>

@@ -1,5 +1,9 @@
 package com.zhhiyp.avcrawl.core;
 
+import com.zhhiyp.bean.OwnerDO;
+import com.zhhiyp.bean.StatDO;
+import com.zhhiyp.bean.VideoDO;
+import com.zhhiyp.service.VideoSaveService;
 import org.apache.log4j.Logger;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Spider;
@@ -12,15 +16,13 @@ import us.codecraft.webmagic.pipeline.ConsolePipeline;
 public class VideoProcessor extends AbstractProcessor {
 	private static final Logger LOGGER = Logger.getLogger(VideoProcessor.class);
 
-	private static final String defineUrl = "https://api.bilibili.com/x/web-interface/view?aid=1";//32858614
+	private static final String defineUrl = "https://api.bilibili.com/x/web-interface/view?aid=";//32858614
+	private static boolean added = false;
+
 	@Override
 	protected void addHost() {
 		//TODO b站视频单体页面HOST
 		site.addHeader("Host", "api.bilibili.com");
-		//TODO b站单体视频TAG
-		//https://api.bilibili.com/x/tag/archive/tags?aid=32858614
-		//空是: {"code":0,"message":"0","ttl":1,"data":[]}
-		//data.0.tag_id:tagId; data.0.tag_name:tagName;
 		//TODO b站单体视频信息
 		//https://api.bilibili.com/x/web-interface/view?aid=32858614
 		//空是: {"code":-404,"message":"啥都木有","ttl":1,"data":null}
@@ -29,18 +31,47 @@ public class VideoProcessor extends AbstractProcessor {
 		//stat:view观看数;danmaku:弹幕数;reply:回复数;favorite:收藏;coin:硬币;分享;like:点赞;
 	}
 
-	@Override
 	public void process(Page page) {
+		if (!added) {
+			for (int i = 0; i < 100; i++) {
+				page.addTargetRequest(defineUrl + i);
+			}
+			added = true;
+		}
+
+		getVideo(page);
+	}
+
+	private void getVideo(Page page) {
 		String data = page.getJson().jsonPath("$.data").get();
-		if(data == null){
+		if (data == null) {
 			LOGGER.info("data is null,skip it!");
 			return;
 		}
+
 		String aid = page.getJson().jsonPath("$.data.aid").get();
-		String videoNums = page.getJson().jsonPath("$.data.videos").get();
-		String tagId = page.getJson().jsonPath("$.data.tid").get();
-		String tagNames = page.getJson().jsonPath("$.data.tname").get();
-		String upnames = page.getJson().jsonPath("$.data.owner.name").get();
+		String videoNum = page.getJson().jsonPath("$.data.videos").get();
+		String tName = page.getJson().jsonPath("$.data.tname").get();
+		String title = page.getJson().jsonPath("$.data.title").get();
+		String pubdate = page.getJson().jsonPath("$.data.pubdate").get();
+		String desc = page.getJson().jsonPath("$.data.desc").get();
+		String duration = page.getJson().jsonPath("$.data.duration").get();
+		String ownerId = page.getJson().jsonPath("$.data.owner.mid").get();
+		String name = page.getJson().jsonPath("$.data.owner.name").get();
+
+		String view = page.getJson().jsonPath("$.data.stat.view").get();
+		String danmaku = page.getJson().jsonPath("$.data.stat.danmaku").get();
+		String reply = page.getJson().jsonPath("$.data.stat.reply").get();
+		String favorite = page.getJson().jsonPath("$.data.stat.favorite").get();
+		String coin = page.getJson().jsonPath("$.data.stat.coin").get();
+
+		OwnerDO ownerDO = new OwnerDO(ownerId, name);
+		VideoDO videoDO = new VideoDO(aid, videoNum, tName, title, pubdate, desc, duration, ownerId);
+		//TODO need another api to get tags
+
+		StatDO statDO = new StatDO(aid, view, danmaku, reply, favorite, coin);
+
+		VideoSaveService.saveVideoDo(videoDO, ownerDO, statDO);
 	}
 
 	@Override
@@ -48,9 +79,9 @@ public class VideoProcessor extends AbstractProcessor {
 		addHost();
 		Spider.create(this)
 				//.addUrl(urls)
-				.addUrl(defineUrl)
+				.addUrl(defineUrl + 1)
 				.addPipeline(new ConsolePipeline())
-				.thread(5)
+				.thread(50)
 				.run();
 	}
 }
