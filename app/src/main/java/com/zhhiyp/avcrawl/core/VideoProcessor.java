@@ -24,7 +24,7 @@ public class VideoProcessor extends AbstractProcessor {
 		//TODO b站单体视频信息
 		//https://api.bilibili.com/x/web-interface/view?aid=32858614
 		//空是: {"code":-404,"message":"啥都木有","ttl":1,"data":null}
-		//data:aid 视频号;videos:视频个数;tid:tagId;tname:分区名;title:视频名;pubdate:发布时间;
+		//data:aid 视频号;videos:视频个数;tid:分区id;tname:分区名;title:视频名;pubdate:发布时间;
 		//desc:视频描述;duration:视频总长s;owner.mid:作者ID,owner.name:作者名;
 		//stat:view观看数;danmaku:弹幕数;reply:回复数;favorite:收藏;coin:硬币;分享;like:点赞;
 	}
