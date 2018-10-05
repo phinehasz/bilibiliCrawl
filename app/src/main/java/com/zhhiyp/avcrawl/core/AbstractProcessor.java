@@ -26,6 +26,10 @@ public abstract class AbstractProcessor implements PageProcessor {
 		return site;
 	}
 
+	public static void setAid(int start){
+		aid = start;
+	}
+
 	protected abstract void addHost();
 
 	public abstract void run(int threadNum);

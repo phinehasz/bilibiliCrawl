@@ -37,6 +37,9 @@ public class TagProcessor extends AbstractProcessor {
 			page.addTargetRequest(defineUrl + aid);
 			aid++;
 		}
+		if(aid%10000 == 0 ){
+			System.gc();
+		}
 		getTag(page);
 	}
 

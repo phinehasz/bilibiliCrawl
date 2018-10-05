@@ -1,5 +1,6 @@
 package com.zhhiyp.facade;
 
+import com.zhhiyp.avcrawl.core.AbstractProcessor;
 import com.zhhiyp.avcrawl.core.TagProcessor;
 import com.zhhiyp.avcrawl.core.VideoProcessor;
 import org.apache.log4j.Logger;
@@ -15,9 +16,10 @@ public class Starter {
 	//FACADE TO START
 	public static void main(String[] args) {
 		if(args.length ==0 ){
-			System.out.println("use like this:java -jar xxx.jar start video[or tag] -thread 50");
+			System.out.println("use like this:java -jar xxx.jar start video[or tag] -th 50 begin 10000");
 		}
 		if(args.length >= 1 && "start".equals(args[0])){
+			AbstractProcessor.setAid(Integer.parseInt(args[5]));
 			if("video".equals(args[1])){
 				new VideoProcessor().run(Integer.parseInt(args[3]));
 			}

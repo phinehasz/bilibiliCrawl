@@ -42,7 +42,9 @@ public class VideoProcessor extends AbstractProcessor {
 			page.addTargetRequest(defineUrl + aid);
 			aid++;
 		}
-
+		if(aid%10000 == 0 ){
+			System.gc();
+		}
 		getVideo(page);
 	}
 
