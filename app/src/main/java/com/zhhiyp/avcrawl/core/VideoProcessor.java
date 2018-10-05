@@ -18,6 +18,7 @@ public class VideoProcessor extends AbstractProcessor {
 
 	private static final String defineUrl = "https://api.bilibili.com/x/web-interface/view?aid=";//32858614
 	private static boolean added = false;
+	private static final int total = 1000000;
 
 	@Override
 	protected void addHost() {
@@ -33,7 +34,7 @@ public class VideoProcessor extends AbstractProcessor {
 
 	public void process(Page page) {
 		if (!added) {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < total; i++) {
 				page.addTargetRequest(defineUrl + i);
 			}
 			added = true;

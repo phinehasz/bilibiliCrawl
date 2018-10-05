@@ -33,7 +33,7 @@ public class TagDao {
 
 	private static void save(String aid){
 		//String aid, String videoNum, String tName, String title, String pubdate, String desc, String duration, String ownerId,String tags
-		String tags = tagGraph.get(aid);
+		String tags = tagGraph.remove(aid);
 		//video还未注册
 		if(tags == null){
 			return;

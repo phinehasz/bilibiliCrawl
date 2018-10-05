@@ -16,6 +16,7 @@ public class TagProcessor extends AbstractProcessor {
 	private static final Logger LOGGER = Logger.getLogger(TagProcessor.class);
 	private static final String defineUrl = "https://api.bilibili.com/x/tag/archive/tags?aid=";
 	private static boolean added = false;
+	private static final int total = 1000000;
 	protected void addHost() {
 		site.addHeader("Host", "api.bilibili.com");
 		//TODO b站单体视频TAG
@@ -26,7 +27,7 @@ public class TagProcessor extends AbstractProcessor {
 
 	public void process(Page page) {
 		if (!added) {
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < total; i++) {
 				page.addTargetRequest(defineUrl + i);
 			}
 			added = true;
