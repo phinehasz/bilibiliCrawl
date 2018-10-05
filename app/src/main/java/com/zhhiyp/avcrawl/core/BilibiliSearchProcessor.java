@@ -1,6 +1,5 @@
-package com.zyp.Bilibili;
+package com.zhhiyp.avcrawl.core;
 
-import com.zyp.util.SimpleUtil;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -62,11 +61,11 @@ public class BilibiliSearchProcessor implements PageProcessor{
 		//视频说明
 		List<String> description = page.getJson().jsonPath("$..description").all();
 		page.putField("description", description);
-		for (int i=0;i<ups.size();i++) {
-			BiliVideosDao.save(keyword,ups.get(i),SimpleUtil.cutHtml(titles.get(i)),srcLinks.get(i),durations.get(i),watchNums.get(i)
-			, SimpleUtil.convert2String(1000*Long.parseLong(uploadTimes.get(i))),
-					ids.get(i),tags.get(i),favorites.get(i),description.get(i));
-		}
+//		for (int i=0;i<ups.size();i++) {
+//			BiliVideosDao.save(keyword,ups.get(i),SimpleUtil.cutHtml(titles.get(i)),srcLinks.get(i),durations.get(i),watchNums.get(i)
+//			, SimpleUtil.convert2String(1000*Long.parseLong(uploadTimes.get(i))),
+//					ids.get(i),tags.get(i),favorites.get(i),description.get(i));
+//		}
 	}
 
 	public Site getSite() {
