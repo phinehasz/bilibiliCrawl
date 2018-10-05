@@ -54,15 +54,15 @@ public class TagProcessor extends AbstractProcessor {
 	}
 
 	public static void main(String[] args) {
-		new TagProcessor().run();
+		new TagProcessor().run(50);
 	}
-	public void run() {
+	public void run(int threadNum) {
 		addHost();
 		Spider.create(this)
 				//.addUrl(urls)
 				.addUrl(defineUrl+1)
 				.addPipeline(new ConsolePipeline())
-				.thread(50)
+				.thread(threadNum)
 				.run();
 	}
 }

@@ -24,5 +24,5 @@ public abstract class AbstractProcessor implements PageProcessor {
 
 	protected abstract void addHost();
 
-	public abstract void run();
+	public abstract void run(int threadNum);
 }

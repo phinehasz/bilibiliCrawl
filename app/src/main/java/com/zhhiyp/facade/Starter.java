@@ -15,8 +15,8 @@ public class Starter {
 	//FACADE TO START
 	public static void main(String[] args) {
 		if(args.length == 1 && "start".equals(args[0])){
-			new VideoProcessor().run();
-			new TagProcessor().run();
+			new VideoProcessor().run(10);
+			new TagProcessor().run(10);
 		}else {
 			LOGGER.error("can't resolve args: "+Arrays.toString(args));
 		}

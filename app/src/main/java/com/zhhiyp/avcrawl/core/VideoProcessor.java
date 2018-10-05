@@ -76,13 +76,13 @@ public class VideoProcessor extends AbstractProcessor {
 	}
 
 	@Override
-	public void run() {
+	public void run(int threadNum) {
 		addHost();
 		Spider.create(this)
 				//.addUrl(urls)
 				.addUrl(defineUrl + 1)
 				.addPipeline(new ConsolePipeline())
-				.thread(50)
+				.thread(threadNum)
 				.run();
 	}
 }
