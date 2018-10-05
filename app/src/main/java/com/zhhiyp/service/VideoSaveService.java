@@ -18,7 +18,6 @@ public class VideoSaveService {
 	public static void saveVideoDo(VideoDO videoDO, OwnerDO ownerDO, StatDO statDO){
 		videoDO.setPubdate(StringUtil.convert2String(1000*Long.parseLong(videoDO.getPubdate())));
 		VideoDao.insertVideoDO(videoDO);
-		TagDao.register(videoDO.getAid());
 		VideoDao.insertOwnerDO(ownerDO);
 		VideoDao.insertStatDO(statDO);
 	}

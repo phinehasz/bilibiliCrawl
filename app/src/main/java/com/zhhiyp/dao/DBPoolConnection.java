@@ -9,8 +9,6 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.druid.pool.DruidPooledConnection;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -61,11 +59,9 @@ public class DBPoolConnection {
 		if (null == fullFile || fullFile.equals("")){
 			throw new IllegalArgumentException("Properties file path can not be null" + fullFile);
 		}
-		classpath = DBPoolConnection.class.getClassLoader().getResource("").getPath();
-		InputStream inputStream = null;
+		InputStream inputStream = DBPoolConnection.class.getClassLoader().getResourceAsStream(fullFile);
 		Properties p =null;
 		try {
-			inputStream = new FileInputStream(new File(classpath + File.separator + fullFile));
 			p = new Properties();
 			p.load(inputStream);
 		} catch (Exception e) {

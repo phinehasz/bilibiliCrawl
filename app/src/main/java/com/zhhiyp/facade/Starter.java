@@ -14,9 +14,16 @@ public class Starter {
 	private static final Logger LOGGER = Logger.getLogger(Starter.class);
 	//FACADE TO START
 	public static void main(String[] args) {
-		if(args.length == 1 && "start".equals(args[0])){
-			new VideoProcessor().run(10);
-			new TagProcessor().run(10);
+		if(args.length ==0 ){
+			System.out.println("use like this:java -jar xxx.jar start video[or tag] -thread 50");
+		}
+		if(args.length >= 1 && "start".equals(args[0])){
+			if("video".equals(args[1])){
+				new VideoProcessor().run(Integer.parseInt(args[3]));
+			}
+			if("tag".equals(args[1])){
+				new TagProcessor().run(Integer.parseInt(args[3]));
+			}
 		}else {
 			LOGGER.error("can't resolve args: "+Arrays.toString(args));
 		}
