@@ -39,8 +39,8 @@ public class VideoProcessor extends AbstractProcessor {
 //			added = true;
 //		}
 		for (int i = 0; i < step; i++) {
-			page.addTargetRequest(defineUrl + aid);
 			aid++;
+			page.addTargetRequest(defineUrl + aid);
 		}
 		if(aid%10000 == 0 ){
 			System.gc();
@@ -82,7 +82,6 @@ public class VideoProcessor extends AbstractProcessor {
 	@Override
 	public void run(int threadNum) {
 		addHost();
-		step = threadNum;
 		Spider.create(this)
 				//.addUrl(urls)
 				.addUrl(defineUrl + 1)

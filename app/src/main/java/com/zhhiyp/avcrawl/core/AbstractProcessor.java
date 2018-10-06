@@ -10,8 +10,8 @@ import us.codecraft.webmagic.processor.PageProcessor;
 public abstract class AbstractProcessor implements PageProcessor {
 
 	protected static int aid = 1;
-	protected static int step = 30;
-
+	protected static int step = 3;
+	//Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36
 	protected Site site = Site.me().setUserAgent("Mozilla/5.0 (Windows NT 10.0; …e/59.0.3071.109 Safari/537.36")
 			.setRetryTimes(3)
 			.setTimeOut(30000)
