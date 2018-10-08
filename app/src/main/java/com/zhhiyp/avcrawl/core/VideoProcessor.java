@@ -17,8 +17,7 @@ public class VideoProcessor extends AbstractProcessor {
 	private static final Logger LOGGER = Logger.getLogger(VideoProcessor.class);
 
 	private static final String defineUrl = "https://api.bilibili.com/x/web-interface/view?aid=";//32858614
-	//private static boolean added = false;
-	//private static final int total = 1000000;
+
 	@Override
 	protected void addHost() {
 		//TODO b站视频单体页面HOST
@@ -32,16 +31,10 @@ public class VideoProcessor extends AbstractProcessor {
 	}
 
 	public void process(Page page) {
-//		if (!added) {
-//			for (int i = 0; i < total; i++) {
-//				page.addTargetRequest(defineUrl + i);
-//			}
-//			added = true;
-//		}
-		for (int i = 0; i < step; i++) {
-			aid++;
-			page.addTargetRequest(defineUrl + aid);
-		}
+		//原操作造成队列堵塞
+		aid++;
+		page.addTargetRequest(defineUrl + aid);
+
 		if(aid%10000 == 0 ){
 			System.gc();
 		}

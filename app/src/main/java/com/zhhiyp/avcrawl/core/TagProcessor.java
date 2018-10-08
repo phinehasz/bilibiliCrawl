@@ -15,8 +15,7 @@ import java.util.List;
 public class TagProcessor extends AbstractProcessor {
 	private static final Logger LOGGER = Logger.getLogger(TagProcessor.class);
 	private static final String defineUrl = "https://api.bilibili.com/x/tag/archive/tags?aid=";
-	//private static boolean added = false;
-	//private static final int total = 1000000;
+
 	//tag at 18845
 	protected void addHost() {
 		site.addHeader("Host", "api.bilibili.com");
@@ -27,51 +26,44 @@ public class TagProcessor extends AbstractProcessor {
 	}
 
 	public void process(Page page) {
-//		if (!added) {
-//			for (int i = 0; i < total; i++) {
-//				page.addTargetRequest(defineUrl + i);
-//			}
-//			added = true;
-//		}
-		for (int i = 0; i < step; i++) {
-			aid++;
-			page.addTargetRequest(defineUrl + aid);
-		}
-		if(aid%10000 == 0 ){
+		aid++;
+		page.addTargetRequest(defineUrl + aid);
+		if (aid % 10000 == 0) {
 			System.gc();
 		}
 		getTag(page);
 	}
 
-	private void getTag(Page page){
-		if(page.getStatusCode() == 403){
-			LOGGER.error(page.getRequest().getUrl()+" code:403");
+	private void getTag(Page page) {
+		if (page.getStatusCode() == 403) {
+			LOGGER.error(page.getRequest().getUrl() + " code:403");
 			return;
 		}
 
 		String data = page.getJson().jsonPath("$.data").get();
-		if(data == null){
+		if (data == null) {
 			LOGGER.info("data is null,skip it!");
 			return;
 		}
 		List<String> tagNames = page.getJson().jsonPath("$..tag_name").all();
 		String url = page.getRequest().getUrl();
-		VideoSaveService.saveTags(cut2Aid(url),tagNames);
+		VideoSaveService.saveTags(cut2Aid(url), tagNames);
 
 	}
 
 	private String cut2Aid(String url) {
-		return url.substring(url.lastIndexOf("=")+1);
+		return url.substring(url.lastIndexOf("=") + 1);
 	}
 
 	public static void main(String[] args) {
 		new TagProcessor().run(50);
 	}
+
 	public void run(int threadNum) {
 		addHost();
 		Spider.create(this)
 				//.addUrl(urls)
-				.addUrl(defineUrl+aid)
+				.addUrl(defineUrl + aid)
 				.addPipeline(new ConsolePipeline())
 				.thread(threadNum)
 				.run();
