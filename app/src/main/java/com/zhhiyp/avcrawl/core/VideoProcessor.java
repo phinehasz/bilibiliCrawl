@@ -18,6 +18,8 @@ public class VideoProcessor extends AbstractProcessor {
 
 	private static final String defineUrl = "https://api.bilibili.com/x/web-interface/view?aid=";//32858614
 
+	private static int queneMax = 0;
+	private static int current = 0;
 	@Override
 	protected void addHost() {
 		//TODO b站视频单体页面HOST
@@ -31,14 +33,19 @@ public class VideoProcessor extends AbstractProcessor {
 	}
 
 	public void process(Page page) {
-		//原操作造成队列堵塞
-		aid++;
-		page.addTargetRequest(defineUrl + aid);
+		//原操作造成队列堵塞 单纯+1 又没有使用到其他线程,降低效率
+		while(current < queneMax){
+			aid++;
+			page.addTargetRequest(defineUrl + aid);
+			current += 1;
+		}
+
 
 		if(aid%10000 == 0 ){
 			System.gc();
 		}
 		getVideo(page);
+		current -= 1;
 	}
 
 	private void getVideo(Page page) {
@@ -75,9 +82,10 @@ public class VideoProcessor extends AbstractProcessor {
 	@Override
 	public void run(int threadNum) {
 		addHost();
+		queneMax = threadNum*2;
 		Spider.create(this)
 				//.addUrl(urls)
-				.addUrl(defineUrl + 1)
+				.addUrl(defineUrl + aid)
 				.addPipeline(new ConsolePipeline())
 				.thread(threadNum)
 				.run();

@@ -15,8 +15,8 @@ import java.util.List;
 public class TagProcessor extends AbstractProcessor {
 	private static final Logger LOGGER = Logger.getLogger(TagProcessor.class);
 	private static final String defineUrl = "https://api.bilibili.com/x/tag/archive/tags?aid=";
-
-	//tag at 18845
+	private static int queneMax = 0;
+	private static int current = 0;
 	protected void addHost() {
 		site.addHeader("Host", "api.bilibili.com");
 		//TODO b站单体视频TAG
@@ -26,12 +26,17 @@ public class TagProcessor extends AbstractProcessor {
 	}
 
 	public void process(Page page) {
-		aid++;
-		page.addTargetRequest(defineUrl + aid);
+		while(current < queneMax){
+			aid++;
+			page.addTargetRequest(defineUrl + aid);
+			current += 1;
+		}
+
 		if (aid % 10000 == 0) {
 			System.gc();
 		}
 		getTag(page);
+		current -= 1;
 	}
 
 	private void getTag(Page page) {
@@ -61,6 +66,7 @@ public class TagProcessor extends AbstractProcessor {
 
 	public void run(int threadNum) {
 		addHost();
+		queneMax = threadNum*2;
 		Spider.create(this)
 				//.addUrl(urls)
 				.addUrl(defineUrl + aid)
