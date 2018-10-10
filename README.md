@@ -18,8 +18,8 @@ facade
 
 将工程打包(内置shade插件),会打成一个fat jar  
 `java -jar xxx.jar start [video/tag] -th [线程数] begin [开始av号]`  
-第一次启动:  
-`java -jar xxx.jar start [video/tag] -th [线程数] begin 1`即可  
+例如,第一次启动:  
+`java -jar xxx.jar start video -th 50 begin 1`即可  
 begin这个参数 之前是为了解决溢出和临时暂停的问题.  
 
 目前video和tag的爬取是分开的.  
