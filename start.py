@@ -41,7 +41,7 @@ class Reg (Frame):
             cmd = [command,"start",choice,"-th",threadNum,"begin",begin]
             new_cmd = " ".join(cmd)
             #file_out = subprocess.Popen(new_cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-            subprocess.Popen(new_cmd,creationflags =subprocess.CREATE_NEW_CONSOLE)
+            subprocess.Popen(new_cmd)
             # while True:
             #     line = file_out.stdout.readline()
             #     print(line)
