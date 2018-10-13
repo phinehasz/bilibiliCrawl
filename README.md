@@ -16,7 +16,7 @@ facade
 ```
 **使用方法:**  
 
-将工程打包(内置shade插件),会打成一个fat jar  
+将工程打包(内置shade插件),会打成一个fat jar,在app模块的target下    
 `java -jar xxx.jar start [video/tag] -th [线程数] begin [开始av号]`  
 例如,第一次启动:  
 `java -jar xxx.jar start video -th 50 begin 1`即可  
@@ -28,6 +28,10 @@ tag线程我之前较多,结果被b站封ip和user-agent了.先建议7~20.
 
 ---
 **UPDATE LOG:**  
+2018/10/13
+```
+写了一个start.py的python GUI,把最终的jar包和py脚本放一个目录就可以瞎玩了
+```
 2018/10/9  
 ```
 调整为循环控制队列总大小,解决溢出问题.  
