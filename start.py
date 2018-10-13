@@ -36,10 +36,11 @@ class Reg (Frame):
         if choice == 'video' or choice == 'tag':
             self.lab4["text"] = "prepared to start..."
             #open a jar
-            command = "java -jar bilibiliCrawl.jar"
+            command = "java -jar app\\target\\app-1.2-shaded.jar"
             
             cmd = [command,"start",choice,"-th",threadNum,"begin",begin]
             new_cmd = " ".join(cmd)
+            print new_cmd
             #file_out = subprocess.Popen(new_cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
             subprocess.Popen(new_cmd)
             # while True:
