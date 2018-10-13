@@ -30,7 +30,8 @@ tag线程我之前较多,结果被b站封ip和user-agent了.先建议7~20.
 **UPDATE LOG:**  
 2018/10/13
 ```
-写了一个start.py的python GUI,把最终的jar包和py脚本放一个目录就可以瞎玩了
+写了一个start.py的python GUI,
+start.py是在根目录的,打包后,python start.py就可以了
 ```
 2018/10/9  
 ```
