@@ -3,12 +3,14 @@ package com.zhhiyp.avcrawl.core;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author zhiyp
  * @date 2018/10/4 0004
  */
 public abstract class AbstractProcessor implements PageProcessor {
-	protected static int aid = 1;
+	protected static AtomicInteger aid = new AtomicInteger(1);
 	//Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36
 	protected Site site = Site.me().setUserAgent("Mozilla/5.0 (Windows NT 10.0; …e/59.0.3071.109 Safari/537.36")
 			.setRetryTimes(3)
@@ -25,7 +27,7 @@ public abstract class AbstractProcessor implements PageProcessor {
 	}
 
 	public static void setAid(int start){
-		aid = start;
+		aid.set(start);
 	}
 
 	protected abstract void addHost();

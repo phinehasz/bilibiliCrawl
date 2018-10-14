@@ -9,6 +9,8 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author zhiyp
  * @date 2018/10/4 0004
@@ -18,8 +20,8 @@ public class VideoProcessor extends AbstractProcessor {
 
 	private static final String defineUrl = "https://api.bilibili.com/x/web-interface/view?aid=";//32858614
 
-	private static int queneMax = 0;
-	private static int current = 0;
+	private static AtomicInteger queneMax = new AtomicInteger(0);
+	private static AtomicInteger current = new AtomicInteger(0);
 	@Override
 	protected void addHost() {
 		//TODO b站视频单体页面HOST
@@ -34,18 +36,14 @@ public class VideoProcessor extends AbstractProcessor {
 
 	public void process(Page page) {
 		//原操作造成队列堵塞 单纯+1 又没有使用到其他线程,降低效率
-		while(current < queneMax){
-			aid++;
+		while(current.get() < queneMax.get()){
+			aid.getAndIncrement();
 			page.addTargetRequest(defineUrl + aid);
-			current += 1;
+			current.getAndIncrement();
 		}
 
-
-		if(aid%10000 == 0 ){
-			System.gc();
-		}
 		getVideo(page);
-		current -= 1;
+		current.getAndDecrement();
 	}
 
 	private void getVideo(Page page) {
@@ -82,7 +80,7 @@ public class VideoProcessor extends AbstractProcessor {
 	@Override
 	public void run(int threadNum) {
 		addHost();
-		queneMax = threadNum*2;
+		queneMax.set(threadNum*2);
 		Spider.create(this)
 				//.addUrl(urls)
 				.addUrl(defineUrl + aid)

@@ -1,4 +1,4 @@
-# bilibiliCrawl 1.2V
+﻿# bilibiliCrawl 1.2V
 基于WebMagic的b站视频爬虫  
 以关键词爬取数据,分析内容,统计  
 目前生产环境运行中...  **欢迎反馈**
@@ -31,7 +31,7 @@ tag线程我之前较多,结果被b站封ip和user-agent了.先建议7~20.
 2018/10/13
 ```
 写了一个start.py的python GUI,
-start.py是在根目录的,打包后,python start.py就可以了
+start.py是在根目录的,打包后,windows端双击 start.py就可以了
 ```
 2018/10/9  
 ```
