@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
+import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -44,7 +45,11 @@ public class TagProcessor extends AbstractProcessor {
 			return;
 		}
 
-		String data = page.getJson().jsonPath("$.data").get();
+		Selectable selectable = page.getJson().jsonPath("$.data");
+		if(selectable == null){
+			return;
+		}
+		String data = selectable.get();
 		if (data == null) {
 			LOGGER.info("data is null,skip it!");
 			return;
