@@ -1,5 +1,6 @@
 package com.zhhiyp.avcrawl.core;
 
+import com.jayway.jsonpath.PathNotFoundException;
 import com.zhhiyp.service.VideoSaveService;
 import org.apache.log4j.Logger;
 import us.codecraft.webmagic.Page;
@@ -20,6 +21,7 @@ public class TagProcessor extends AbstractProcessor {
 
 	private static AtomicInteger queneMax = new AtomicInteger(0);
 	private static AtomicInteger current = new AtomicInteger(0);
+
 	protected void addHost() {
 		site.addHeader("Host", "api.bilibili.com");
 		//TODO b站单体视频TAG
@@ -29,7 +31,7 @@ public class TagProcessor extends AbstractProcessor {
 	}
 
 	public void process(Page page) {
-		while(current.get() < queneMax.get()){
+		while (current.get() < queneMax.get()) {
 			aid.getAndIncrement();
 			page.addTargetRequest(defineUrl + aid);
 			current.getAndIncrement();
@@ -45,19 +47,19 @@ public class TagProcessor extends AbstractProcessor {
 			return;
 		}
 
-		Selectable selectable = page.getJson().jsonPath("$.data");
-		if(selectable == null){
-			return;
+		try {
+			Selectable selectable = page.getJson().jsonPath("$.data");
+			String data = selectable.get();
+			if (data == null) {
+				LOGGER.info("data is null,skip it!");
+				return;
+			}
+			List<String> tagNames = page.getJson().jsonPath("$..tag_name").all();
+			String url = page.getRequest().getUrl();
+			VideoSaveService.saveTags(cut2Aid(url), tagNames);
+		} catch (PathNotFoundException e) {
+			LOGGER.error("data not found!大丈夫");
 		}
-		String data = selectable.get();
-		if (data == null) {
-			LOGGER.info("data is null,skip it!");
-			return;
-		}
-		List<String> tagNames = page.getJson().jsonPath("$..tag_name").all();
-		String url = page.getRequest().getUrl();
-		VideoSaveService.saveTags(cut2Aid(url), tagNames);
-
 	}
 
 	private String cut2Aid(String url) {
@@ -70,7 +72,7 @@ public class TagProcessor extends AbstractProcessor {
 
 	public void run(int threadNum) {
 		addHost();
-		queneMax.set(threadNum*2);
+		queneMax.set(threadNum * 2);
 		Spider.create(this)
 				//.addUrl(urls)
 				.addUrl(defineUrl + aid)
