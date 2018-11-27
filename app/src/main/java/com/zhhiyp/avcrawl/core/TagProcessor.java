@@ -24,10 +24,11 @@ public class TagProcessor extends AbstractProcessor {
 
 	protected void addHost() {
 		site.addHeader("Host", "api.bilibili.com");
-		//TODO b站单体视频TAG
-		//https://api.bilibili.com/x/tag/archive/tags?aid=32858614
-		//空是: {"code":0,"message":"0","ttl":1,"data":[]}
-		//data.0.tag_id:tagId; data.0.tag_name:tagName;
+		 /**
+		 *https://api.bilibili.com/x/tag/archive/tags?aid=32858614
+		 * 空是: {"code":0,"message":"0","ttl":1,"data":[]}
+		 *  data.0.tag_id:tagId; data.0.tag_name:tagName;
+		 */
 	}
 
 	public void process(Page page) {
