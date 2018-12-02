@@ -1,6 +1,5 @@
 package com.zhhiyp.avcrawl.core;
 
-import com.jayway.jsonpath.PathNotFoundException;
 import com.zhhiyp.service.VideoSaveService;
 import org.apache.log4j.Logger;
 import us.codecraft.webmagic.Page;
@@ -43,12 +42,12 @@ public class TagProcessor extends AbstractProcessor {
 	}
 
 	private void getTag(Page page) {
-		if (page.getStatusCode() == 403) {
-			LOGGER.error(page.getRequest().getUrl() + " code:403");
-			return;
-		}
-
 		try {
+			if (page.getStatusCode() == 403) {
+				LOGGER.error(page.getRequest().getUrl() + " code:403");
+				return;
+			}
+
 			Selectable selectable = page.getJson().jsonPath("$.data");
 			String data = selectable.get();
 			if (data == null) {
@@ -58,8 +57,8 @@ public class TagProcessor extends AbstractProcessor {
 			List<String> tagNames = page.getJson().jsonPath("$..tag_name").all();
 			String url = page.getRequest().getUrl();
 			VideoSaveService.saveTags(cut2Aid(url), tagNames);
-		} catch (PathNotFoundException e) {
-			LOGGER.error("data not found!大丈夫");
+		} catch (Throwable e) {
+			LOGGER.error("data not found!"+page.getUrl(),e);
 		}
 	}
 
