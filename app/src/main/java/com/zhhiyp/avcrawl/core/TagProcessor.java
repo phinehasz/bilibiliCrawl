@@ -7,7 +7,6 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.selector.Selectable;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -54,9 +53,8 @@ public class TagProcessor extends AbstractProcessor {
 				LOGGER.info("data is null,skip it!");
 				return;
 			}
-			List<String> tagNames = page.getJson().jsonPath("$..tag_name").all();
 			String url = page.getRequest().getUrl();
-			VideoSaveService.saveTags(cut2Aid(url), tagNames);
+			VideoSaveService.saveTags(cut2Aid(url), page.getJson().jsonPath("$..tag_name").all());
 		} catch (Throwable e) {
 			LOGGER.error("data not found!"+page.getUrl(),e);
 		}

@@ -75,6 +75,9 @@ public class VideoProcessor extends AbstractProcessor {
 		StatDO statDO = new StatDO(aid, view, danmaku, reply, favorite, coin);
 
 		VideoSaveService.saveVideoDo(videoDO, ownerDO, statDO);
+		ownerDO = null;
+		videoDO = null;
+		statDO = null;
 	}
 
 	@Override
